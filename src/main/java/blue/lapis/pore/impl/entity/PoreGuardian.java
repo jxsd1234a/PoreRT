@@ -26,11 +26,11 @@
 
 package blue.lapis.pore.impl.entity;
 
-import static org.spongepowered.api.data.manipulator.catalog.CatalogEntityData.ELDER_DATA;
-
 import blue.lapis.pore.converter.wrapper.WrapperConverter;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.entity.EntityType;
+import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.monster.Guardian;
 
 public class PoreGuardian extends PoreMonster implements org.bukkit.entity.Guardian {
@@ -55,18 +55,20 @@ public class PoreGuardian extends PoreMonster implements org.bukkit.entity.Guard
 
     @Override
     public boolean isElder() {
-        return hasData(ELDER_DATA);
+        return this.getHandle().getType().equals(EntityTypes.ELDER_GUARDIAN);
     }
 
     @Override
     @Deprecated
     public void setElder(boolean shouldBeElder) {
         if (shouldBeElder != isElder()) {
+            throw new NotImplementedException("setElder is not implemented!");
+            /*
             if (shouldBeElder) {
                 getHandle().offer(getHandle().getOrCreate(ELDER_DATA).get().elder().set(true));
             } else {
                 getHandle().remove(ELDER_DATA);
-            }
+            }*/
         }
     }
 }

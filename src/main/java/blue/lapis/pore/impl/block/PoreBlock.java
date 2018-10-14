@@ -57,7 +57,6 @@ import org.spongepowered.api.data.property.block.PoweredProperty;
 import org.spongepowered.api.data.property.block.SkyLuminanceProperty;
 import org.spongepowered.api.data.property.block.TemperatureProperty;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.Location;
 
 import java.util.Collection;
@@ -115,7 +114,7 @@ public class PoreBlock extends PoreWrapper<Location<org.spongepowered.api.world.
 
     @Override
     public void setType(Material type) {
-        getHandle().setBlockType(MaterialConverter.asBlock(type), Cause.of(NamedCause.source(Pore.getPlugin())));
+        getHandle().setBlockType(MaterialConverter.asBlock(type));
     }
 
     @Override
@@ -205,7 +204,7 @@ public class PoreBlock extends PoreWrapper<Location<org.spongepowered.api.world.
     public boolean setTypeId(int type, boolean applyPhysics) {
         //TODO: applyPhysics
         BlockType blockType = MaterialConverter.asBlock(Material.getMaterial(type));
-        getHandle().setBlockType(blockType, Cause.of(NamedCause.source(Pore.getPlugin())));
+        getHandle().setBlockType(blockType);
         return getHandle().getBlockType().equals(blockType);
     }
 

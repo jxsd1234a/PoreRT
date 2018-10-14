@@ -28,9 +28,9 @@ import com.google.common.collect.Sets;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
-import gnu.trove.map.hash.TObjectIntHashMap;
+//import gnu.trove.map.hash.TObjectIntHashMap;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.spongepowered.common.SpongeImpl;
+import org.spongepowered.api.Sponge;
 
 /**
  * Here for binary compatibility with Spigot.
@@ -65,13 +65,13 @@ public class SpigotConfig
 
     public static boolean bungee;
     static {
-        bungee = SpongeImpl.getGlobalConfig().getConfig().getBungeeCord().getIpForwarding();
+        bungee = false; //SpongeImpl.getGlobalConfig().getConfig().getBungeeCord().getIpForwarding();
     }
 
     public static boolean lateBind = false;
 
     public static boolean disableStatSaving = false;
-    public static TObjectIntHashMap<String> forcedStats = new TObjectIntHashMap<String>();
+    //public static TObjectIntHashMap<String> forcedStats = new TObjectIntHashMap<String>();
     public static int playerSample = 12;
 
     public static int playerShuffle = 0;

@@ -29,9 +29,11 @@ package blue.lapis.pore.impl.entity;
 import blue.lapis.pore.converter.type.entity.ProfessionConverter;
 import blue.lapis.pore.converter.wrapper.WrapperConverter;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager.Profession;
-import org.spongepowered.api.data.type.ZombieTypes;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.monster.Zombie;
 
 @SuppressWarnings("deprecation")
@@ -57,41 +59,44 @@ public class PoreZombie extends PoreMonster implements org.bukkit.entity.Zombie 
 
     @Override
     public boolean isBaby() {
-        return getHandle().getAgeData().baby().get();
+        return this.getHandle().require(Keys.AGE) > 0;
     }
 
     @Override
     public void setBaby(boolean isBaby) {
-        getHandle().getAgeData().baby().set(isBaby);
+        this.getHandle().offer(Keys.AGE, -1);
     }
 
     @Override
     @Deprecated
     public boolean isVillager() {
-        return getHandle().getZombieData().type().equals(ZombieTypes.VILLAGER);
+        return this.getHandle().getType().equals(EntityTypes.ZOMBIE_VILLAGER);
     }
 
     @Override
     @Deprecated
     public void setVillager(boolean isVillager) {
         if (isVillager != isVillager()) {
-            if (isVillager) {
+            throw new NotImplementedException("setVillager is not implemented!");
+            /*if (isVillager) {
                 getHandle().getZombieData().type().set(ZombieTypes.VILLAGER);
             } else {
                 getHandle().getZombieData().type().set(ZombieTypes.NORMAL);
-            }
+            }*/
         }
     }
 
     @Override
     @Deprecated
     public void setVillagerProfession(Profession profession) {
-        getHandle().getZombieData().profession().setTo(ProfessionConverter.of(profession));
+        throw new NotImplementedException("setVillagerProfession is not implemented!");
+        //getHandle().getZombieData().profession().setTo(ProfessionConverter.of(profession));
     }
 
     @Override
     @Deprecated
     public Profession getVillagerProfession() {
-        return ProfessionConverter.of(getHandle().getZombieData().profession().get().orElse(null));
+        throw new NotImplementedException("getVillagerProfession is not implemented!");
+        //ProfessionConverter.of(getHandle().getZombieData().profession().get().orElse(null));
     }
 }

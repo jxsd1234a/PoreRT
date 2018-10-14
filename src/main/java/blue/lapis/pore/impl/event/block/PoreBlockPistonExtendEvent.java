@@ -39,7 +39,6 @@ import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.PistonTypes;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -110,7 +109,7 @@ public final class PoreBlockPistonExtendEvent extends BlockPistonExtendEvent
     @RegisterEvent
     public static void register() {
         PoreEventRegistry.register(PoreBlockPistonExtendEvent.class, ChangeBlockEvent.Pre.class, event -> {
-            Optional<BlockSnapshot> block = event.getCause().get(NamedCause.SOURCE, BlockSnapshot.class);
+            Optional<BlockSnapshot> block = event.getCause().first(BlockSnapshot.class);
             if (block.isPresent() && block.get().getExtendedState().getType().equals(BlockTypes.PISTON)) {
                 if (!block.get().get(Keys.EXTENDED).get()) {
                     return ImmutableList.of(new PoreBlockPistonExtendEvent(event, block.get()));

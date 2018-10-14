@@ -27,7 +27,6 @@
 package blue.lapis.pore.impl.event.block;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.spongepowered.api.event.cause.NamedCause.SOURCE;
 
 import blue.lapis.pore.event.PoreEvent;
 import blue.lapis.pore.event.PoreEventRegistry;
@@ -87,7 +86,7 @@ public final class PoreBlockBurnEvent extends BlockBurnEvent implements PoreEven
     public static void register() {
         PoreEventRegistry.register(PoreBlockBurnEvent.class, ChangeBlockEvent.class, event -> {
             ArrayList<PoreBlockBurnEvent> events = new ArrayList<PoreBlockBurnEvent>();
-            BlockSnapshot fire = event.getCause().get(SOURCE, BlockSnapshot.class).orElse(null);
+            BlockSnapshot fire = event.getCause().first(BlockSnapshot.class).orElse(null);
             if (fire != null && fire.getState().getType() == BlockTypes.FIRE) {
                 for (Transaction<BlockSnapshot> trans : event.getTransactions()) {
                     BlockType from = trans.getOriginal().getState().getType();

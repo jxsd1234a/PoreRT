@@ -32,8 +32,6 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.spongepowered.api.entity.projectile.Firework;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 
 public class PoreFirework extends PoreEntity implements org.bukkit.entity.Firework {
 
@@ -67,6 +65,6 @@ public class PoreFirework extends PoreEntity implements org.bukkit.entity.Firewo
 
     @Override
     public void detonate() {
-        getHandle().detonate(Cause.of(NamedCause.source(this))); //TODO get cause
+        getHandle().detonate(); //TODO get cause
     }
 }

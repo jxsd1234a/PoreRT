@@ -26,7 +26,8 @@ import blue.lapis.pore.converter.type.material.ItemStackConverter;
 
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
-import org.spongepowered.api.item.Enchantment;
+import org.spongepowered.api.item.enchantment.Enchantment;
+import org.spongepowered.api.item.enchantment.EnchantmentType;
 
 public class PoreEnchantment extends org.bukkit.enchantments.Enchantment {
 
@@ -38,23 +39,27 @@ public class PoreEnchantment extends org.bukkit.enchantments.Enchantment {
         this.handle = enchantment;
     }
 
+    public PoreEnchantment(EnchantmentType type) {
+        this(Enchantment.builder().type(type).build());
+    }
+
     public Enchantment getHandle() {
         return this.handle;
     }
 
     @Override
     public String getName() {
-        return getHandle().getName();
+        return getHandle().getType().getName();
     }
 
     @Override
     public int getMaxLevel() {
-        return getHandle().getMaximumLevel();
+        return getHandle().getType().getMaximumLevel();
     }
 
     @Override
     public int getStartLevel() {
-        return getHandle().getMinimumLevel();
+        return getHandle().getType().getMinimumLevel();
     }
 
     @Override
@@ -94,12 +99,12 @@ public class PoreEnchantment extends org.bukkit.enchantments.Enchantment {
 
     @Override
     public boolean conflictsWith(org.bukkit.enchantments.Enchantment other) {
-        return getHandle().isCompatibleWith(((PoreEnchantment) other).getHandle());
+        return getHandle().getType().isCompatibleWith(((PoreEnchantment) other).getHandle().getType());
     }
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return getHandle().canBeAppliedToStack(ItemStackConverter.of(item));
+        return getHandle().getType().canBeAppliedToStack(ItemStackConverter.of(item));
     }
 
     @Override

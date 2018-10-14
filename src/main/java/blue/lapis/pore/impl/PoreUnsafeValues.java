@@ -38,9 +38,9 @@ import org.bukkit.UnsafeValues;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 import org.spongepowered.api.CatalogType;
+import org.spongepowered.api.advancement.Advancement;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.item.ItemType;
-import org.spongepowered.api.statistic.achievement.Achievement;
 
 import java.util.List;
 import java.util.Optional;
@@ -107,19 +107,20 @@ public class PoreUnsafeValues implements UnsafeValues {
 
     @Override
     public org.bukkit.Achievement getAchievementFromInternalName(String name) {
-        Optional<Achievement> ach = Pore.getGame().getRegistry().getType(Achievement.class, name); //TODO is this right?
+        return null;
+        /*Optional<Advancement> ach = Pore.getGame().getRegistry().getType(Advancement.class, name); //TODO is this right?
         if (ach.isPresent()) {
             return AchievementConverter.of(ach.get());
         } else {
             return null;
-        }
+        }*/
     }
 
     @Override
     public List<String> tabCompleteInternalStatisticOrAchievementName(String token, List<String> completions) {
         List<String> found = StringUtil.copyPartialMatches(
                 token,
-                Iterables.transform(Pore.getGame().getRegistry().getAllOf(Achievement.class), //TODO is this right?
+                Iterables.transform(Pore.getGame().getRegistry().getAllOf(Advancement.class), //TODO is this right?
                         CatalogType::getName),
                 completions
         );

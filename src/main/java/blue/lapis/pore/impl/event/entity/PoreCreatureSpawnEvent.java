@@ -42,8 +42,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.Living;
-import org.spongepowered.api.event.cause.NamedCause;
-import org.spongepowered.api.event.cause.entity.spawn.SpawnCause;
+import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
 
 import java.util.ArrayList;
@@ -91,7 +90,9 @@ public final class PoreCreatureSpawnEvent extends CreatureSpawnEvent implements 
     @Override
     public SpawnReason getSpawnReason() {
         return SpawnReasonConverter.of(getHandle().getCause()
-                .get(NamedCause.SOURCE, SpawnCause.class).orElse(null).getType());
+                .getContext()
+                .get(EventContextKeys.SPAWN_TYPE)
+                .orElse(null));
     }
 
     @Override

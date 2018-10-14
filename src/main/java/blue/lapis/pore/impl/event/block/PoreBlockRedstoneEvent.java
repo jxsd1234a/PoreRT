@@ -34,7 +34,8 @@ import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.data.Transaction;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
-import org.spongepowered.api.event.cause.NamedCause;
+
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public final class PoreBlockRedstoneEvent extends BlockRedstoneEvent
@@ -55,7 +56,11 @@ public final class PoreBlockRedstoneEvent extends BlockRedstoneEvent
 
     @Override
     public Block getBlock() {
-        return PoreBlock.of(getHandle().getCause().get(NamedCause.SOURCE, BlockSnapshot.class).get().getLocation().get());
+        return PoreBlock.of(getHandle().getCause()
+                .first(BlockSnapshot.class)
+                .map(BlockSnapshot::getLocation)
+                .map(Optional::get)
+                .orElse(null));
     }
 
     @Override

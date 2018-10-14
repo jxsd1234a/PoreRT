@@ -33,14 +33,15 @@ import blue.lapis.pore.util.PoreWrapper;
 import com.google.common.base.Preconditions;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ServerScoreboard;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Score;
 import org.spongepowered.api.scoreboard.Scoreboard;
 import org.spongepowered.api.scoreboard.critieria.Criteria;
 import org.spongepowered.api.scoreboard.objective.Objective;
-import org.spongepowered.common.registry.type.scoreboard.DisplaySlotRegistryModule;
-import org.spongepowered.common.scoreboard.SpongeObjective;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class PoreObjective extends PoreWrapper<Objective> implements org.bukkit.scoreboard.Objective {
 
@@ -104,23 +105,29 @@ public class PoreObjective extends PoreWrapper<Objective> implements org.bukkit.
     @Override
     public DisplaySlot getDisplaySlot() throws IllegalStateException {
         // I genuinely have no idea why this isn't implemented in SpongeAPI
+        /*
         checkState();
         ServerScoreboard board = (ServerScoreboard) ((PoreScoreboard)this.getScoreboard()).getHandle();
         int slotIndex = board.getObjectiveDisplaySlotCount(((SpongeObjective) getHandle()).getObjectiveFor(board));
-        return DisplaySlotConverter.of(DisplaySlotRegistryModule.getInstance().getForIndex(slotIndex).get());
+        return DisplaySlotConverter.of(DisplaySlotRegistryModule.getInstance().getForIndex(slotIndex).get());*/
+        throw new NotImplementedException("getDisplaySlot is not implemented!");
     }
 
     @Override
     public void setDisplaySlot(DisplaySlot slot) throws IllegalStateException {
         // same goes for this one
-        checkState();
-        Scoreboard board = ((PoreScoreboard)this.getScoreboard()).getHandle();
-        ServerScoreboard mcBoard = (ServerScoreboard) board;
-        ScoreObjective objective = ((SpongeObjective) getHandle()).getObjectiveFor(mcBoard);
+        try {
+            checkState();
+            Scoreboard board = ((PoreScoreboard) this.getScoreboard()).getHandle();
+            ServerScoreboard mcBoard = (ServerScoreboard) board;
+            ScoreObjective objective = (ScoreObjective) this.getHandle().getClass().getMethod("getObjectiveFor").invoke(getHandle(), mcBoard);
 
-        int slotIndex = mcBoard.getObjectiveDisplaySlotCount(objective);
-        mcBoard.setObjectiveInDisplaySlot(slotIndex, null);
-        board.updateDisplaySlot(getHandle(), DisplaySlotConverter.of(slot));
+            int slotIndex = mcBoard.getObjectiveDisplaySlotCount(objective);
+            mcBoard.setObjectiveInDisplaySlot(slotIndex, null);
+            board.updateDisplaySlot(getHandle(), DisplaySlotConverter.of(slot));
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

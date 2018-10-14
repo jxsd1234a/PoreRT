@@ -48,7 +48,8 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.spongepowered.api.entity.living.Humanoid;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
-import org.spongepowered.common.item.inventory.adapter.impl.slots.SlotAdapter;
+import org.spongepowered.api.item.inventory.property.SlotIndex;
+import org.spongepowered.api.item.inventory.property.SlotPos;
 
 import java.util.List;
 
@@ -156,7 +157,7 @@ public final class PoreInventoryClickEvent extends InventoryClickEvent implement
 
     @Override
     public int getRawSlot() {
-        return ((SlotAdapter) getHandle().getTransactions().get(0).getSlot()).slotNumber;
+        return getHandle().getTransactions().get(0).getSlot().getInventoryProperty(SlotIndex.class).get().getValue();
     }
 
     @Override

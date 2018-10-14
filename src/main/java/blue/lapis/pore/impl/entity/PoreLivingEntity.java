@@ -22,6 +22,7 @@
 
 package blue.lapis.pore.impl.entity;
 
+import static org.spongepowered.api.data.manipulator.catalog.CatalogEntityData.LEASH_DATA;
 import static org.spongepowered.api.data.manipulator.catalog.CatalogEntityData.POTION_EFFECT_DATA;
 
 import blue.lapis.pore.converter.type.material.MaterialConverter;
@@ -50,6 +51,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.spongepowered.api.data.DataTransactionResult;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.manipulator.immutable.entity.ImmutableLeashData;
+import org.spongepowered.api.data.manipulator.mutable.entity.LeashData;
 import org.spongepowered.api.data.property.entity.EyeHeightProperty;
 import org.spongepowered.api.data.property.entity.EyeLocationProperty;
 import org.spongepowered.api.entity.living.Living;
@@ -350,13 +353,13 @@ public class PoreLivingEntity extends PoreEntity implements LivingEntity {
 
     @Override
     public boolean isLeashed() {
-        return getHandle().get(Keys.LEASH_HOLDER).isPresent();
+        return getHandle().get(LeashData.class).isPresent();
     }
 
     @Override
     public Entity getLeashHolder() throws IllegalStateException {
         if (isLeashed()) {
-            return PoreEntity.of(getHandle().get(Keys.LEASH_HOLDER).get());
+            return PoreEntity.of(getHandle().get(LeashData.class).get().leashHolder().get());
         } else {
             throw new IllegalStateException("Not leashed");
         }
@@ -364,7 +367,8 @@ public class PoreLivingEntity extends PoreEntity implements LivingEntity {
 
     @Override
     public boolean setLeashHolder(Entity holder) {
-        return getHandle().offer(Keys.LEASH_HOLDER, ((PoreEntity) holder).getHandle().createSnapshot()).isSuccessful();
+        throw new NotImplementedException("setLeashHolder is not implemented!");
+        //return getHandle().offer(Keys.LEASH_HOLDER, ((PoreEntity) holder).getHandle().createSnapshot()).isSuccessful();
     }
 
     @Override

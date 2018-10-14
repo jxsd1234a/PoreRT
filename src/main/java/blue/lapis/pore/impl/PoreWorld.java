@@ -86,8 +86,6 @@ import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.entity.EntityTypes;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
-import org.spongepowered.api.event.cause.entity.spawn.SpawnCause;
 import org.spongepowered.api.event.cause.entity.spawn.SpawnTypes;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.explosion.Explosion;
@@ -337,8 +335,7 @@ public class PoreWorld extends PoreWrapper<World> implements org.bukkit.World {
             return null;
         }
 
-        getHandle().spawnEntity(entity, Cause.of(
-                NamedCause.source(SpawnCause.builder().type(SpawnTypes.PLUGIN).build())));
+        getHandle().spawnEntity(entity);
         return PoreEntity.of(entity);
     }
 
@@ -529,7 +526,7 @@ public class PoreWorld extends PoreWrapper<World> implements org.bukkit.World {
                 .shouldBreakBlocks(breakBlocks)
                 .build();
 
-        explosion.getWorld().triggerExplosion(explosion, Cause.source(this).build());
+        explosion.getWorld().triggerExplosion(explosion);
         return true; // TODO
     }
 

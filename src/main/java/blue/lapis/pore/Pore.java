@@ -44,7 +44,6 @@ import org.slf4j.Logger;
 import org.slf4j.helpers.NOPLogger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.game.state.GameAboutToStartServerEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartingServerEvent;
@@ -67,7 +66,6 @@ import java.util.Optional;
  * An implementation of the Bukkit API built on Sponge.
  * (Main Plugin Class)
  * @author Lapis Blue
- * @see PoreBootstrap
  */
 public final class Pore implements PoreEventManager {
 
@@ -157,9 +155,9 @@ public final class Pore implements PoreEventManager {
 
     @Override // This is horrible but it's needed for setDisplayName ...
     public void onChatEvent(MessageChannelEvent.Chat event) {
-        Optional<Player> optPlayer = event.getCause().get(NamedCause.SOURCE, Player.class);
-        if (optPlayer.isPresent()) { // fire ASyncPlayerChatEvent and PlayerChatEvent
-            Player player = optPlayer.get();
+        Object p = event.getCause().root();
+        if (p instanceof Player) { // fire ASyncPlayerChatEvent and PlayerChatEvent
+            Player player = (Player) p;
             MessageFormatter formatter = event.getFormatter();
 
             SimpleTextTemplateApplier header = formatter.getHeader().get(0);

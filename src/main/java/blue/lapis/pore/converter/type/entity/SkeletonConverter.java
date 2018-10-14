@@ -30,8 +30,8 @@ import blue.lapis.pore.converter.type.TypeConverter;
 
 import com.google.common.base.Converter;
 import org.bukkit.entity.Skeleton;
-import org.spongepowered.api.data.type.SkeletonType;
-import org.spongepowered.api.data.type.SkeletonTypes;
+import org.spongepowered.api.entity.EntityType;
+import org.spongepowered.api.entity.EntityTypes;
 
 @Deprecated
 public final class SkeletonConverter {
@@ -39,18 +39,18 @@ public final class SkeletonConverter {
     private SkeletonConverter() {
     }
 
-    public static final Converter<Skeleton.SkeletonType, SkeletonType> CONVERTER =
-            TypeConverter.builder(Skeleton.SkeletonType.class, SkeletonType.class)
-                    .add(Skeleton.SkeletonType.NORMAL, SkeletonTypes.NORMAL)
-                    .add(Skeleton.SkeletonType.WITHER, SkeletonTypes.WITHER)
-                    .add(Skeleton.SkeletonType.STRAY, SkeletonTypes.STRAY)
+    public static final Converter<Skeleton.SkeletonType, EntityType> CONVERTER =
+            TypeConverter.builder(Skeleton.SkeletonType.class, EntityType.class)
+                    .add(Skeleton.SkeletonType.NORMAL, EntityTypes.SKELETON)
+                    .add(Skeleton.SkeletonType.WITHER, EntityTypes.WITHER_SKELETON)
+                    .add(Skeleton.SkeletonType.STRAY, EntityTypes.STRAY)
                     .build();
 
-    public static SkeletonType of(Skeleton.SkeletonType type) {
+    public static EntityType of(Skeleton.SkeletonType type) {
         return CONVERTER.convert(type);
     }
 
-    public static Skeleton.SkeletonType of(SkeletonType type) {
+    public static Skeleton.SkeletonType of(EntityType type) {
         return CONVERTER.reverse().convert(type);
     }
 

@@ -27,7 +27,6 @@
 package blue.lapis.pore.impl.event.block;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.spongepowered.api.event.cause.NamedCause.SOURCE;
 
 import blue.lapis.pore.event.PoreEvent;
 import blue.lapis.pore.event.PoreEventRegistry;
@@ -102,10 +101,10 @@ public final class PoreBlockBreakEvent extends BlockBreakEvent implements PoreEv
     @RegisterEvent
     public static void register() {
         PoreEventRegistry.register(PoreBlockBreakEvent.class, ChangeBlockEvent.Break.class, event -> {
-            Player player = event.getCause().get(SOURCE, Player.class).orElse(null);
-            if (player != null) {
+            Object p = event.getCause().root();
+            if (p instanceof Player) {
                 return event.getTransactions().stream()
-                        .map(transaction -> new PoreBlockBreakEvent(event, player, transaction))
+                        .map(transaction -> new PoreBlockBreakEvent(event, (Player) p, transaction))
                         .collect(GuavaCollectors.toImmutableList());
             } else {
                 return ImmutableList.of();

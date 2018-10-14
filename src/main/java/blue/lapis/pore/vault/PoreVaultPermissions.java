@@ -31,6 +31,7 @@ import org.spongepowered.api.service.context.Context;
 import org.spongepowered.api.service.permission.PermissionService;
 import org.spongepowered.api.service.permission.Subject;
 import org.spongepowered.api.service.permission.SubjectData;
+import org.spongepowered.api.service.permission.SubjectReference;
 import org.spongepowered.api.util.Tristate;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class PoreVaultPermissions extends Permission {
     }
 
     public static Subject getGroupByName(String string) {
-        return string == null ? null : getPermsService().getGroupSubjects().get(string);
+        return string == null ? null : getPermsService().getGroupSubjects().getSubject(string).orElse(null);
     }
 
     public static Set<Context> getContextByWorldName(String world) {
@@ -80,7 +81,7 @@ public class PoreVaultPermissions extends Permission {
     @Override
     public String[] getGroups() {
         ArrayList<String> groups = new ArrayList<String>();
-        for (Subject subject : getPermsService().getGroupSubjects().getAllSubjects()) {
+        for (Subject subject : getPermsService().getGroupSubjects().getLoadedSubjects()) {
             groups.add(subject.getIdentifier());
         }
         return groups.toArray(new String[groups.size()]);
@@ -94,12 +95,14 @@ public class PoreVaultPermissions extends Permission {
 
     @Override
     public boolean groupAdd(final String world, String name, final String permission) {
-        return getGroupByName(name).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.TRUE);
+        getGroupByName(name).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.TRUE);
+        return true;
     }
 
     @Override
     public boolean groupRemove(final String world, String name, final String permission) {
-        return getGroupByName(name).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.FALSE);
+        getGroupByName(name).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.FALSE);
+        return true;
     }
 
     @Override
@@ -109,36 +112,39 @@ public class PoreVaultPermissions extends Permission {
 
     @Override
     public boolean playerAdd(final String world, OfflinePlayer player, final String permission) {
-        return getUserByOfflinePlayer(player).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.TRUE);
+        getUserByOfflinePlayer(player).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.TRUE);
+        return true;
     }
 
     @Override
     public boolean playerRemove(final String world, OfflinePlayer player, final String permission) {
-        return getUserByOfflinePlayer(player).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.FALSE);
+        getUserByOfflinePlayer(player).getSubjectData().setPermission(getContextByWorldName(world), permission, Tristate.FALSE);
+        return true;
     }
 
 
     @Override
     public boolean playerInGroup(String world, OfflinePlayer player, String group) {
-        return getUserByOfflinePlayer(player).isChildOf(getContextByWorldName(world), getGroupByName(group));
+        getUserByOfflinePlayer(player).isChildOf(getContextByWorldName(world), getGroupByName(group).asSubjectReference());
+        return true;
     }
 
     @Override
     public boolean playerAddGroup(final String world, OfflinePlayer player, final String group) {
-        return getUserByOfflinePlayer(player).getSubjectData().addParent(getContextByWorldName(world), getGroupByName(group));
+        getUserByOfflinePlayer(player).getSubjectData().addParent(getContextByWorldName(world), getGroupByName(group).asSubjectReference());
+        return true;
     }
 
     @Override
     public boolean playerRemoveGroup(final String world, OfflinePlayer player, final String group) {
-        return getUserByOfflinePlayer(player).getSubjectData().removeParent(getContextByWorldName(world), getGroupByName(group));
+        getUserByOfflinePlayer(player).getSubjectData().removeParent(getContextByWorldName(world), getGroupByName(group).asSubjectReference());
+        return true;
     }
 
     @Override
     public String[] getPlayerGroups(String world, OfflinePlayer player) {
         return getUserByOfflinePlayer(player).getParents(getContextByWorldName(world))
-                .stream().map(subject -> {
-                    return subject.getIdentifier();
-                }).toArray(size -> new String[size]);
+                .stream().map(SubjectReference::getSubjectIdentifier).toArray(size -> new String[size]);
     }
 
     @Override // copied

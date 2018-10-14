@@ -38,7 +38,6 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.event.cause.entity.damage.source.DamageSource;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 
@@ -108,7 +107,7 @@ public final class PoreEntityDamageEvent extends EntityDamageEvent implements Po
     @Override
     public DamageCause getCause() {
         DamageSource cause = null;
-        Optional<DamageSource> source = getHandle().getCause().get(NamedCause.SOURCE, DamageSource.class);
+        Optional<DamageSource> source = getHandle().getCause().first(DamageSource.class);
         if (source.isPresent()) {
             cause = source.get();
         }

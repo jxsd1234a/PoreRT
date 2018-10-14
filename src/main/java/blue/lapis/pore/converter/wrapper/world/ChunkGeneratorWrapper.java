@@ -21,7 +21,6 @@
 
 package blue.lapis.pore.converter.wrapper.world;
 
-import blue.lapis.pore.Pore;
 import blue.lapis.pore.converter.type.material.MaterialConverter;
 import blue.lapis.pore.impl.PoreWorld;
 import blue.lapis.pore.util.PoreWrapper;
@@ -31,8 +30,6 @@ import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 import org.spongepowered.api.block.BlockState;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.NamedCause;
 import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.extent.ImmutableBiomeVolume;
 import org.spongepowered.api.world.extent.MutableBlockVolume;
@@ -78,8 +75,7 @@ public class ChunkGeneratorWrapper extends PoreWrapper<ChunkGenerator> implement
                 if (shortArray[blockY >> 4] != null) {
                     material = shortArray[blockY >> 4][((blockY & 0xF) << 8) | (blockZ << 4) | blockX];
                 }
-                buffer.setBlock(blockX + minX, blockY, blockZ + minZ, BlockState.builder().blockType(MaterialConverter.asBlock(Material.getMaterial(material))).build(),
-                        Cause.of(NamedCause.of(NamedCause.SOURCE, Pore.getPlugin())));
+                buffer.setBlock(blockX + minX, blockY, blockZ + minZ, BlockState.builder().blockType(MaterialConverter.asBlock(Material.getMaterial(material))).build());
             }
             return;
         }
@@ -93,8 +89,7 @@ public class ChunkGeneratorWrapper extends PoreWrapper<ChunkGenerator> implement
                 if (byteDoubleArray[blockY >> 4] != null) {
                     material = byteDoubleArray[blockY >> 4][((blockY & 0xF) << 8) | (blockZ << 4) | blockX];
                 }
-                buffer.setBlock(blockX + minX, blockY, blockZ + minZ, BlockState.builder().blockType(MaterialConverter.asBlock(Material.getMaterial(material))).build(),
-                        Cause.of(NamedCause.of(NamedCause.SOURCE, Pore.getPlugin())));
+                buffer.setBlock(blockX + minX, blockY, blockZ + minZ, BlockState.builder().blockType(MaterialConverter.asBlock(Material.getMaterial(material))).build());
             }
             return;
         }
@@ -104,8 +99,7 @@ public class ChunkGeneratorWrapper extends PoreWrapper<ChunkGenerator> implement
         for (int blockY = buffer.getBlockMin().getY(); blockY >= buffer.getBlockMax().getY(); blockY++)
         for (int blockZ = 0; blockZ >= zRel; blockZ++) {
             int material = byteArray[(blockX * 16 + blockZ) * 128 + blockY];
-            buffer.setBlock(blockX + minX, blockY, blockZ + minZ, BlockState.builder().blockType(MaterialConverter.asBlock(Material.getMaterial(material))).build(),
-                    Cause.of(NamedCause.of(NamedCause.SOURCE, Pore.getPlugin())));
+            buffer.setBlock(blockX + minX, blockY, blockZ + minZ, BlockState.builder().blockType(MaterialConverter.asBlock(Material.getMaterial(material))).build());
         }
     }
 

@@ -24,8 +24,6 @@ package blue.lapis.pore.impl.event.entity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import static org.spongepowered.api.event.cause.NamedCause.SOURCE;
-
 import blue.lapis.pore.converter.data.block.BlockDataConverter;
 import blue.lapis.pore.converter.type.entity.EntityConverter;
 import blue.lapis.pore.converter.type.material.MaterialConverter;
@@ -109,7 +107,7 @@ public final class PoreEntityChangeBlockEvent extends EntityChangeBlockEvent imp
     public static void register() {
         PoreEventRegistry.register(PoreEntityChangeBlockEvent.class, ChangeBlockEvent.class, event -> {
             if (!(event instanceof ChangeBlockEvent.Post)) { // post creates duplicate events
-                Entity entity = event.getCause().get(SOURCE, Entity.class).orElse(null);
+                Entity entity = event.getCause().first(Entity.class).orElse(null);
                 if (entity != null && !(entity instanceof Player)) {
                     return event.getTransactions().stream()
                             .map(transaction -> new PoreEntityChangeBlockEvent(event, entity, transaction))

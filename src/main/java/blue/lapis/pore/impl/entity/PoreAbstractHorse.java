@@ -26,7 +26,7 @@ import blue.lapis.pore.converter.type.entity.HorseConverter;
 import blue.lapis.pore.converter.wrapper.WrapperConverter;
 import blue.lapis.pore.impl.inventory.PoreInventory;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse.Variant;
@@ -56,12 +56,12 @@ public class PoreAbstractHorse extends PoreTameable implements AbstractHorse {
 
     @Override
     public Variant getVariant() {
-        return HorseConverter.of(getHandle().getHorseData().variant().get());
+        return HorseConverter.of(this.getHandle().getType());
     }
 
     @Override
     public void setVariant(Variant variant) {
-        getHandle().getHorseData().variant().set(HorseConverter.of(variant));
+        throw new NotImplementedException("setVariant is not implemented!");
     }
 
     @Override

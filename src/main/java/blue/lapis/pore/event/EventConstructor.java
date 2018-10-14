@@ -27,7 +27,6 @@
 package blue.lapis.pore.event;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.spongepowered.api.event.cause.NamedCause.SOURCE;
 
 import blue.lapis.pore.util.constructor.BiClassConstructor;
 import blue.lapis.pore.util.constructor.PoreConstructors;
@@ -118,6 +117,7 @@ abstract class EventConstructor<P extends org.bukkit.event.Event & PoreEvent<S>,
 
     }
 
+    @SuppressWarnings("unchecked")
     private static final class Source<P extends org.bukkit.event.Event & PoreEvent<S>, S extends Event, T>
             extends EventConstructor<P, S> {
 
@@ -133,8 +133,14 @@ abstract class EventConstructor<P extends org.bukkit.event.Event & PoreEvent<S>,
 
         @Override
         public ImmutableList<P> apply(S event) {
-            T source = event.getCause().get(SOURCE, this.source).orElse(null);
-            if (source == null || !test(event)) {
+            try {
+                T s = (T) event.getCause().root();
+            } catch (ClassCastException e) {
+                return ImmutableList.of();
+            }
+
+            T source = (T) event.getCause().root();
+            if (!test(event)) {
                 return ImmutableList.of();
             }
 

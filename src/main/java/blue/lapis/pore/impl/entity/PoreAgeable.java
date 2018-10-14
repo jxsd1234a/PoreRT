@@ -32,6 +32,7 @@ import static org.spongepowered.api.data.manipulator.catalog.CatalogEntityData.B
 import blue.lapis.pore.converter.wrapper.WrapperConverter;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.Ageable;
 
 public class PoreAgeable extends PoreCreature implements org.bukkit.entity.Ageable {
@@ -71,7 +72,7 @@ public class PoreAgeable extends PoreCreature implements org.bukkit.entity.Ageab
 
     @Override
     public void setBaby() {
-        getHandle().offer(getHandle().getOrCreate(AGEABLE_DATA).get().baby().set(true));
+        this.getHandle().offer(Keys.AGE, -1);
     }
 
     @Override
