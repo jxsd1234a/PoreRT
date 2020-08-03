@@ -15,7 +15,10 @@ before_deploy:
   - git tag $TRAVIS_TAG
 deploy:
   provider: releases
-  # ⋮
+  token: 9fef00ffc8786a65a626ddbfc1a90ce81e6f186e
+  file: lib\*.jar
+  on:
+    tags: true
 env:
   global:
     - LAPIS_DEPLOY=https://github.com/LapisBlue/Deploy.git DEPLOY_ROOT=/tmp/lapis/deploy
